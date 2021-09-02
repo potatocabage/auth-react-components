@@ -3,7 +3,7 @@ import { Loader } from '@innexgo/common-react-components';
 import { ApiKey, UserData, userDataView } from '@innexgo/frontend-auth-api';
 import { unwrap } from '@innexgo/frontend-common';
 import { Async, AsyncProps } from 'react-async';
-import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon} from 'react-bootstrap-icons';
+import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon } from 'react-bootstrap-icons';
 
 
 const iconStyle = {
@@ -32,7 +32,7 @@ const SidebarEntry: React.FunctionComponent<SidebarEntryProps> = props => {
   } else {
     // not collapsed
     return <a style={style} className="nav-item nav-link" href={props.href}>
-      <Icon style={iconStyle} /> {props.label}
+      <Icon style={iconStyle} className="me-2" />{props.label}
     </a>
   }
 }
@@ -101,41 +101,40 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
 
     return (
       <InnerLayoutContext.Provider value={collapsed}>
-        <div>
-          <nav className="bg-dark text-light" style={sidebarStyle}>
-            <div className="nav-item nav-link link-light">
-              <MenuIcon style={iconStyle} onClick={_ => setCollapsed(!collapsed)} />
-            </div>
-            <span className="nav-item nav-link link-light mx-auto my-3">
-              <Async promiseFn={loadUserData} apiKey={props.apiKey}>
-                <Async.Pending>
-                  {collapsed ? false : <Loader /> }
-                </Async.Pending>
-                <Async.Rejected>
-                  <span className="text-danger">Couldn't load User</span>
-                </Async.Rejected>
-                <Async.Fulfilled<UserData>>{ud =>
-                  collapsed
-                    ? false
-                    : <h6>Welcome, {ud.name}</h6>
-                }
-                </Async.Fulfilled>
-              </Async>
-            </span>
-            {sidebarChildren}
-            <div style={sidebarBottom}>
-              <button
-                type="button"
-                className="btn nav-item nav-link link-light"
-                onClick={() => props.logoutCallback()}
-              >
-                <ExitAppIcon style={iconStyle} /> {collapsed ? "" : "Log Out"}
-              </button>
-            </div>
-          </nav>
-          <div style={{ marginLeft: `${widthrem}rem` }}>
-            {nonSidebarChildren}
+        <nav className="bg-dark text-light" style={sidebarStyle}>
+          <div className="nav-item nav-link link-light">
+            <MenuIcon style={iconStyle} onClick={_ => setCollapsed(!collapsed)} />
           </div>
+          <span className="nav-item nav-link link-light mx-auto my-3">
+            <Async promiseFn={loadUserData} apiKey={props.apiKey}>
+              <Async.Pending>
+                {collapsed ? false : <Loader />}
+              </Async.Pending>
+              <Async.Rejected>
+                <span className="text-danger">Couldn't load User</span>
+              </Async.Rejected>
+              <Async.Fulfilled<UserData>>{ud =>
+                collapsed
+                  ? false
+                  : <h6>Welcome, {ud.name}</h6>
+              }
+              </Async.Fulfilled>
+            </Async>
+          </span>
+          {sidebarChildren}
+          <div style={sidebarBottom}>
+            <button
+              type="button"
+              className="btn nav-item nav-link link-light"
+              onClick={() => props.logoutCallback()}
+            >
+              <ExitAppIcon style={iconStyle} className="me-2" />
+              {collapsed ? false : "Log Out"}
+            </button>
+          </div>
+        </nav>
+        <div style={{ marginLeft: `${widthrem}rem` }}>
+          {nonSidebarChildren}
         </div>
       </InnerLayoutContext.Provider>
     )

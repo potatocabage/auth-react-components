@@ -137,7 +137,9 @@ function Login(props: LoginProps) {
           {/* Submitting the form will submit the Formik form, which will call onSubmit. */}
           {/* If the operation was successful, props.onSuccess will be called */}
           {/* If it wasn't successful, errors will be set. */}
-          <Button type="submit" className="mb-3">Login</Button>
+          <Form.Group className="mb-3">
+            <Button type="submit">Login</Button>
+          </Form.Group>
           {/* This is where the status text will be displayed */}
           <Form.Text className="text-danger mb-3">{fprops.status}</Form.Text>
           <Form.Group className="mb-3">
