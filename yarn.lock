@@ -3,31 +3,31 @@
 
 
 "@babel/runtime@^7.13.16", "@babel/runtime@^7.14.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.8.7":
-  version "7.15.3"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.3.tgz#2e1c2880ca118e5b2f9988322bd8a7656a32502b"
-  integrity sha512-OvwMLqNXkCXSz1kSm58sEsNuhqOx/fKpnUnKnFB5v8uDda5bLNEHNgKPvhDN6IU0LDcnHQ90LlJ0Q6jnyBSIBA==
+  version "7.15.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
+  integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@innexgo/common-react-components@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.1.tgz#f5b3cd8ea60d0272cdebe7e21e67dead682496c8"
-  integrity sha512-spmr+GzAavTM5UxIsNOpcTXuZpP7WR2+u5L8gKv7ro8WaqSWo6dVl+NPXxwolx1vzxkWFkyVXi8P07wdkBX4nQ==
+"@innexgo/common-react-components@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.5.tgz#232ac00828f707f8c1c0771b93df75a7500e446a"
+  integrity sha512-9V0X+f5q7NBDkX731vsMF59vYD9Cbg5H4e/K6eNYlIiHauZT9DB71UtboJHmAMvBn+32SEnTKu/yI/zGdf1lTQ==
 
 "@innexgo/frontend-auth-api@^0.2.28":
   version "0.2.28"
   resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.28.tgz#e77637994d79221f113181832470445e2d3579a0"
   integrity sha512-RjOaygliTeIiJ5DS+IYnt618vGu7r2QPqtLrUB4IpeUnqLsQ6p8eduyqCW7HqsrGRlUZp9hRaUYGO10o8zd9ZA==
 
-"@innexgo/frontend-common@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@innexgo/frontend-common/-/frontend-common-0.0.9.tgz#5ee992474433bffd146acb2872ce1359dfac528f"
-  integrity sha512-9vX5e/yPOAMAKzu2T3TDaeXF9ycajUFs6WrFWXHW9fZO34PGyvRJ1WXnRiN8nCh8mPg8DkJBQ4Cnb1cWpG7cqg==
+"@innexgo/frontend-common@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@innexgo/frontend-common/-/frontend-common-0.0.10.tgz#e4acd9a00c4bdace68a723eb8f9668ae559bdb07"
+  integrity sha512-OLhWApJLoqyGWZDnCIUDYTPKWpqpLXHYi9G11iL7QanZcoIjY010R65l2NgjWGzAi7kHFknbvAzDBrkooMhmxA==
 
-"@popperjs/core@^2.9.2", "@popperjs/core@^2.9.3":
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.3.tgz#8b68da1ebd7fc603999cf6ebee34a4899a14b88e"
-  integrity sha512-xDu17cEfh7Kid/d95kB6tZsLOmSWKCZKtprnhVepjsSaCij+lM3mItSJDuuHDMbCWTh8Ejmebwb+KONcCJ0eXQ==
+"@popperjs/core@^2.10.1", "@popperjs/core@^2.9.2":
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.1.tgz#728ecd95ab207aab8a9a4e421f0422db329232be"
+  integrity sha512-HnUhk1Sy9IuKrxEMdIRCxpIqPw6BFsbYSEUO9p/hNw5sMld/+3OLMWQP80F8/db9qsv3qUjs7ZR5bS/R+iinXw==
 
 "@react-aria/ssr@^3.0.1":
   version "3.0.3"
