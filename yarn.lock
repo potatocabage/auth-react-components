@@ -14,10 +14,10 @@
   resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.5.tgz#232ac00828f707f8c1c0771b93df75a7500e446a"
   integrity sha512-9V0X+f5q7NBDkX731vsMF59vYD9Cbg5H4e/K6eNYlIiHauZT9DB71UtboJHmAMvBn+32SEnTKu/yI/zGdf1lTQ==
 
-"@innexgo/frontend-auth-api@^0.2.28":
-  version "0.2.28"
-  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.28.tgz#e77637994d79221f113181832470445e2d3579a0"
-  integrity sha512-RjOaygliTeIiJ5DS+IYnt618vGu7r2QPqtLrUB4IpeUnqLsQ6p8eduyqCW7HqsrGRlUZp9hRaUYGO10o8zd9ZA==
+"@innexgo/frontend-auth-api@^0.2.29":
+  version "0.2.29"
+  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.29.tgz#8f8732de6d98d98215682bf227ad422537cfd93f"
+  integrity sha512-4ICWgPD3j22QdVWTUJVgOv2RrvgbhKzUdo7QxDSQm2vsUsHtmKY6utamn9BkkKWwmp+AmY2/j9lAJdHFO59ovQ==
 
 "@innexgo/frontend-common@^0.0.10":
   version "0.0.10"
@@ -95,10 +95,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=16.14.8", "@types/react@>=16.9.11", "@types/react@^17.0.19":
-  version "17.0.19"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.19.tgz#8f2a85e8180a43b57966b237d26a29481dacc991"
-  integrity sha512-sX1HisdB1/ZESixMTGnMxH9TDe8Sk709734fEQZzCV/4lSu9kJCPbo2PbTRoZM+53Pp0P10hYVyReUueGwUi4A==
+"@types/react@*", "@types/react@>=16.14.8", "@types/react@>=16.9.11", "@types/react@^17.0.20":
+  version "17.0.20"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.20.tgz#a4284b184d47975c71658cd69e759b6bd37c3b8c"
+  integrity sha512-wWZrPlihslrPpcKyCSlmIlruakxr57/buQN1RjlIeaaTWDLtJkTtRW429MoQJergvVKc4IWBpRhWw7YNh/7GVA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -127,10 +127,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bootstrap@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.0.tgz#543ef8f44f4b9af67b0230f19508542fec38ef55"
-  integrity sha512-bs74WNI9BgBo3cEovmdMHikSKoXnDgA6VQjJ7TyTotU6L7d41ZyCEEelPwkYEzsG/Zjv3ie9IE3EMAje0W9Xew==
+bootstrap@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.1.tgz#9d6eed81e08feaccedf3adaca51fe4b73a2871df"
+  integrity sha512-/jUa4sSuDZWlDLQ1gwQQR8uoYSvLJzDd8m5o6bPKh3asLAMYVZKdRCjb1joUd5WXf0WwCNzd2EjwQQhupou0dA==
 
 braces@~3.0.2:
   version "3.0.2"
@@ -341,7 +341,7 @@ react-bootstrap@^2.0.0-beta.6:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
-react-dom@17.0.2:
+react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
