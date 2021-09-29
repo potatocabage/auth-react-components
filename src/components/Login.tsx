@@ -60,6 +60,12 @@ function Login(props: LoginProps) {
     if (isErr(maybeApiKey)) {
       // otherwise display errors
       switch (maybeApiKey.Err) {
+        case "EMAIL_NONEXISTENT": {
+          setErrors({
+            email: "No such email exists"
+          });
+          break;
+        }
         case "USER_NONEXISTENT": {
           setErrors({
             email: "No such user exists"
