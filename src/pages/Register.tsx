@@ -14,7 +14,7 @@ function Register(props: BrandedComponentProps) {
             <Card.Title>Register</Card.Title>
             {successful
               ? <> We've sent an email to verify your address. </>
-              : <RegisterForm onSuccess={() => setSuccess(true)} />
+              : <RegisterForm onSuccess={() => setSuccess(true)} tosUrl={props.branding.tosUrl} />
             }
           </Card.Body>
         </Card>

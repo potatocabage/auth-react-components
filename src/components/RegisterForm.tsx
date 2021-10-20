@@ -4,6 +4,7 @@ import { userNew } from '@innexgo/frontend-auth-api';
 import { isErr } from '@innexgo/frontend-common';
 
 type RegisterFormProps = {
+  tosUrl?: string,
   onSuccess: () => void
 }
 
@@ -52,7 +53,7 @@ function RegisterForm(props: RegisterFormProps) {
       hasError = true;
     }
 
-    if (!values.terms) {
+    if (!values.terms && props.tosUrl !== undefined) {
       errors.terms = "You must agree to the terms and conditions";
       hasError = true;
     }
@@ -226,14 +227,14 @@ function RegisterForm(props: RegisterFormProps) {
               />
               <Form.Control.Feedback type="invalid">{fprops.errors.parentEmail}</Form.Control.Feedback>
             </Form.Group>
-            <Form.Check className="mb-3 form-check">
+            <Form.Check className="mb-3 form-check" hidden={props.tosUrl === undefined}>
               <Form.Check.Input
                 name="terms"
                 checked={fprops.values.terms}
                 onChange={fprops.handleChange}
                 isInvalid={!!fprops.errors.terms}
               />
-              <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href="/terms_of_service">terms of service</a></Form.Check.Label>
+              <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
               <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
             </Form.Check>
             <br />

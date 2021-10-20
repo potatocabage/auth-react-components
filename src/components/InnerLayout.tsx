@@ -5,13 +5,47 @@ import { unwrap } from '@innexgo/frontend-common';
 import { Async, AsyncProps } from 'react-async';
 import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon } from 'react-bootstrap-icons';
 
+export interface Preferences {
+  collapsed: boolean,
+  dark: boolean,
+}
+
+function getDefaultPreferences() {
+  const defaultPreferences: Preferences = {
+    collapsed: true,
+    dark: true,
+  }
+  return defaultPreferences;
+}
+
+function getPreexistingPreferences() {
+  // what preferences default to on first login
+
+  const preexistingPreferencesString = localStorage.getItem("preferences");
+  const defaultPreferences = getDefaultPreferences();
+
+  if (preexistingPreferencesString == null) {
+    return defaultPreferences;
+  } else {
+    try {
+      // TODO validate here
+      return JSON.parse(preexistingPreferencesString) as Preferences;
+    } catch (e) {
+      // try to clean up a bad config
+      localStorage.setItem("preferences", JSON.stringify(defaultPreferences));
+      return defaultPreferences;
+    }
+  }
+}
+
+const InnerLayoutContext = React.createContext<Preferences>(getDefaultPreferences());
+
 
 const iconStyle = {
   width: "2rem",
   height: "2rem",
 };
 
-const InnerLayoutContext = React.createContext<boolean>(true)
 
 interface SidebarEntryProps {
   label: string,
@@ -24,7 +58,7 @@ const SidebarEntry: React.FunctionComponent<SidebarEntryProps> = props => {
     color: "#fff"
   }
   const Icon = props.icon;
-  if (React.useContext(InnerLayoutContext)) {
+  if (React.useContext(InnerLayoutContext).collapsed) {
     // collapsed
     return <a style={style} className="nav-item nav-link" href={props.href}>
       <Icon style={iconStyle} />
@@ -62,11 +96,17 @@ interface InnerLayoutProps {
   logoutCallback: () => void
 }
 
+
+
 const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutProps>> & InnerLayoutComposition =
   props => {
-    let [collapsed, setCollapsed] = React.useState<boolean>(true);
+  const [preferences, setPreferencesState] = React.useState(getPreexistingPreferences());
+  const setPreferences = (data: Preferences) => {
+    localStorage.setItem("preferences", JSON.stringify(data));
+    setPreferencesState(data);
+  };
 
-    const widthrem = collapsed ? 4 : 15;
+    const widthrem = preferences.collapsed ? 4 : 15;
 
     const sidebarStyle = {
       height: "100%",
@@ -100,21 +140,26 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
     });
 
     return (
-      <InnerLayoutContext.Provider value={collapsed}>
+      <InnerLayoutContext.Provider value={preferences}>
         <nav className="bg-dark text-light" style={sidebarStyle}>
           <div className="nav-item nav-link link-light">
-            <MenuIcon style={iconStyle} onClick={_ => setCollapsed(!collapsed)} />
+            <MenuIcon style={iconStyle}
+              onClick={_ => setPreferences({
+                collapsed: !preferences.collapsed,
+                dark: preferences.dark
+              })}
+            />
           </div>
           <span className="nav-item nav-link link-light mx-auto my-3">
             <Async promiseFn={loadUserData} apiKey={props.apiKey}>
               <Async.Pending>
-                {collapsed ? false : <Loader />}
+                {preferences.collapsed ? false : <Loader />}
               </Async.Pending>
               <Async.Rejected>
                 <span className="text-danger">Couldn't load User</span>
               </Async.Rejected>
               <Async.Fulfilled<UserData>>{ud =>
-                collapsed
+                preferences.collapsed
                   ? false
                   : <h6>Welcome, {ud.name}</h6>
               }
@@ -129,7 +174,7 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
               onClick={() => props.logoutCallback()}
             >
               <ExitAppIcon style={iconStyle} className="me-2" />
-              {collapsed ? false : "Log Out"}
+              {preferences.collapsed ? false : "Log Out"}
             </button>
           </div>
         </nav>
