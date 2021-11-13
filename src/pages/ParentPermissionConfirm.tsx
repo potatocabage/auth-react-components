@@ -9,10 +9,14 @@ import { SimpleLayout, BrandedComponentProps } from '@innexgo/common-react-compo
 type CreateParentPermissionProps = {
   verificationChallengeKey: string;
   postSubmit: (parentPermission: ParentPermission) => void;
+  tosUrl?: string;
 }
 
 function CreateParentPermission(props: CreateParentPermissionProps) {
-  type CreateParentPermissionValue = {}
+  type CreateParentPermissionValue = {
+    terms: boolean,
+    name: string,
+  }
 
   const onSubmit = async (_: CreateParentPermissionValue,
     fprops: FormikHelpers<CreateParentPermissionValue>) => {
@@ -85,6 +89,7 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
       onSubmit={onSubmit}
       initialValues={{
         name: "",
+        terms: false,
       }}
       initialStatus={{
         failureResult: "",
@@ -96,7 +101,17 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
           noValidate
           onSubmit={fprops.handleSubmit} >
           <div hidden={fprops.status.successResult !== ""}>
-            <Button type="submit">I give permission for my child to use this service.</Button>
+            <Form.Check className="mb-3 form-check" hidden={props.tosUrl === undefined}>
+              <Form.Check.Input
+                name="terms"
+                checked={fprops.values.terms}
+                onChange={fprops.handleChange}
+                isInvalid={!!fprops.errors.terms}
+              />
+              <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
+              <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
+            </Form.Check>
+            <Button type="submit">Submit</Button>
             <br />
             <Form.Text className="text-danger">{fprops.status.failureResult}</Form.Text>
           </div>
