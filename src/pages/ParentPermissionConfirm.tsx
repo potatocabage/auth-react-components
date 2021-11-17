@@ -111,7 +111,7 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
               <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
               <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
             </Form.Check>
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Submitee</Button>
             <br />
             <Form.Text className="text-danger">{fprops.status.failureResult}</Form.Text>
           </div>
