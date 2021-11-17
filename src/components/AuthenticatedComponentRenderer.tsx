@@ -2,22 +2,22 @@ import React from "react";
 import Login from "../components/Login";
 import { ApiKey } from "@innexgo/frontend-auth-api";
 import AuthenticatedComponentProps from '../components/AuthenticatedComponentProps';
-import { SimpleLayout , Branding } from '@innexgo/common-react-components';
+import { SimpleLayout, Branding } from '@innexgo/common-react-components';
 
 
-export interface AuthenticatedRouteProps {
+export interface AuthenticatedComponentRendererProps {
   branding: Branding,
   component: React.ComponentType<AuthenticatedComponentProps>
   apiKey: ApiKey | null,
   setApiKey: (data: ApiKey | null) => void
 }
 
-function AuthenticatedRoute({
+function AuthenticatedComponentRenderer({
   branding,
   component: AuthenticatedComponent,
   apiKey,
   setApiKey,
-}: AuthenticatedRouteProps) {
+}: AuthenticatedComponentRendererProps) {
 
   const isAuthenticated = apiKey !== null &&
     apiKey.creationTime + apiKey.duration > Date.now() &&
@@ -38,4 +38,4 @@ function AuthenticatedRoute({
 
 }
 
-export default AuthenticatedRoute;
+export default AuthenticatedComponentRenderer;
