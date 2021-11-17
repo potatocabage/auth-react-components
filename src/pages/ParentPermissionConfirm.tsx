@@ -142,6 +142,7 @@ function ParentPermissionConfirm(props: BrandedComponentProps) {
                       .replace(' ', '+')
                   }
                   postSubmit={e => setParentPermission(e)}
+                  tosUrl={props.branding.tosUrl}
                 />
             }
           </Card.Body>

@@ -9,7 +9,6 @@ type RegisterFormProps = {
 }
 
 function RegisterForm(props: RegisterFormProps) {
-
   type RegistrationValue = {
     name: string,
     email: string,

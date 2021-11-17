@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card} from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 
 import RegisterForm from '../components/RegisterForm';
 import { SimpleLayout, BrandedComponentProps } from '@innexgo/common-react-components';
