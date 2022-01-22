@@ -4,6 +4,8 @@ import { ApiKey, UserData, userDataView } from '@innexgo/frontend-auth-api';
 import { unwrap } from '@innexgo/frontend-common';
 import { Async, AsyncProps } from 'react-async';
 import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon } from 'react-bootstrap-icons';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 export interface Preferences {
   collapsed: boolean,
@@ -104,7 +106,24 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
   const setPreferences = (data: Preferences) => {
     localStorage.setItem("preferences", JSON.stringify(data));
     setPreferencesState(data);
-  };
+      };
+
+      function submit() {
+          return confirmAlert({
+              title: 'Title',                        // Title dialog
+              message: 'Are you sure you want to log out?',               // Message dialog
+              buttons: [
+                  {
+                      label: 'Yes',
+                      onClick: () => props.logoutCallback()
+                  },
+                  {
+                      label: 'No',
+                      onClick: () => alert('Click No')
+                  }
+              ]
+          })
+      };
 
     const widthrem = preferences.collapsed ? 4 : 15;
 
@@ -128,6 +147,7 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
 
     let sidebarChildren: React.ReactElement[] = [];
     let nonSidebarChildren: React.ReactNode[] = [];
+
 
     React.Children.forEach(props.children, child => {
       if (React.isValidElement(child)) {
@@ -171,7 +191,7 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
             <button
               type="button"
               className="btn nav-item nav-link link-light"
-              onClick={() => props.logoutCallback()}
+                        onClick={() => submit}
             >
               <ExitAppIcon style={iconStyle} className="me-2" />
               {preferences.collapsed ? false : "Log Out"}
