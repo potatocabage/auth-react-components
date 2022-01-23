@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiKey } from '@innexgo/frontend-auth-api';
 import { Icon } from 'react-bootstrap-icons';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 export interface Preferences {
     collapsed: boolean;
     dark: boolean;
