@@ -140,6 +140,7 @@ function ParentPermissionConfirm(props: BrandedComponentProps) {
               parentPermission !== null
                 ? <Card.Text>Thank you, your response has been noted.</Card.Text>
                 : <CreateParentPermission
+                tosUrl={props.branding.tosUrl}
                   verificationChallengeKey={
                     (new URLSearchParams(window.location.search).get("verificationChallengeKey") ?? "")
                       .replace(' ', '+')
