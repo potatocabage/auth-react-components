@@ -8,13 +8,16 @@ import { SimpleLayout, BrandedComponentProps } from '@innexgo/common-react-compo
 
 type CreateParentPermissionProps = {
   verificationChallengeKey: string;
+  tosUrl?: string;
   postSubmit: (parentPermission: ParentPermission) => void;
 }
 
 function CreateParentPermission(props: CreateParentPermissionProps) {
-  type CreateParentPermissionValue = {}
+  type CreateParentPermissionValue = {
+    terms: boolean,
+  }
 
-  const onSubmit = async (_: CreateParentPermissionValue,
+  const onSubmit = async (values: CreateParentPermissionValue,
     fprops: FormikHelpers<CreateParentPermissionValue>) => {
 
     let errors: FormikErrors<CreateParentPermissionValue> = {};
@@ -22,6 +25,10 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
     // Validate input
 
     let hasError = false;
+    if (!values.terms && props.tosUrl !== undefined) {
+      errors.terms = "You must agree to the terms and conditions";
+      hasError = true;
+    }
     fprops.setErrors(errors);
     if (hasError) {
       return;
@@ -84,7 +91,8 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
     <Formik<CreateParentPermissionValue>
       onSubmit={onSubmit}
       initialValues={{
-        name: "",
+        //name: "",
+        terms: false,
       }}
       initialStatus={{
         failureResult: "",
@@ -96,6 +104,16 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
           noValidate
           onSubmit={fprops.handleSubmit} >
           <div hidden={fprops.status.successResult !== ""}>
+          <Form.Check className="mb-3 form-check" hidden={props.tosUrl === undefined}>
+              <Form.Check.Input
+                name="terms"
+                checked={fprops.values.terms}
+                onChange={fprops.handleChange}
+                isInvalid={!!fprops.errors.terms}
+              />
+              <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
+              <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
+            </Form.Check>
             <Button type="submit">I give permission for my child to use this service.</Button>
             <br />
             <Form.Text className="text-danger">{fprops.status.failureResult}</Form.Text>
