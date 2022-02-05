@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Loader } from '@innexgo/common-react-components';
 import { ApiKey, UserData, userDataView } from '@innexgo/frontend-auth-api';
 import { unwrap } from '@innexgo/frontend-common';
 import { Async, AsyncProps } from 'react-async';
 import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon } from 'react-bootstrap-icons';
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import Modal from 'react-bootstrap/Modal'
 
 export interface Preferences {
     collapsed: boolean,
@@ -98,32 +97,12 @@ interface InnerLayoutProps {
     logoutCallback: () => void
 }
 
-
-
 const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutProps>> & InnerLayoutComposition =
     props => {
         const [preferences, setPreferencesState] = React.useState(getPreexistingPreferences());
         const setPreferences = (data: Preferences) => {
             localStorage.setItem("preferences", JSON.stringify(data));
             setPreferencesState(data);
-        };
-
-        function submit() {
-            console.log("called submit");
-            return confirmAlert({
-                title: 'Title',                        // Title dialog
-                message: 'Are you sure you want to log out?',               // Message dialog
-                buttons: [
-                    {
-                        label: 'Yes',
-                        onClick: () => props.logoutCallback()
-                    },
-                    {
-                        label: 'No',
-                        onClick: () => alert('Click No')
-                    }
-                ]
-            })
         };
 
         const widthrem = preferences.collapsed ? 4 : 15;
@@ -160,6 +139,11 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
             }
         });
 
+        const [show, setShow] = useState(false);
+
+        const handleClose = () => setShow(false);
+        const handleShow = () => setShow(true);
+
         return (
             <InnerLayoutContext.Provider value={preferences}>
                 <nav className="bg-dark text-light" style={sidebarStyle}>
@@ -192,12 +176,26 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
                         <button
                             type="button"
                             className="btn nav-item nav-link link-light"
-                            onClick={() => submit()}
+                            onClick={handleShow}
                         >
                             <ExitAppIcon style={iconStyle} className="me-2" />
                             {preferences.collapsed ? false : "Log Out"}
                         </button>
                     </div>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Log Out</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to log out?</Modal.Body>
+                        <Modal.Footer>
+                            <button onClick={() => props.logoutCallback()}>
+                                Yes
+                            </button>
+                            <button onClick={handleClose}>
+                                No
+                            </button>
+                        </Modal.Footer>
+                    </Modal>
                 </nav>
                 <div style={{ marginLeft: `${widthrem}rem` }}>
                     {nonSidebarChildren}
