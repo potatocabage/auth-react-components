@@ -36,17 +36,7 @@ function ManagePassword(props: ManagePasswordProps) {
     if (isErr(passwordChangeResult)) {
       switch (passwordChangeResult.Err) {
         case "API_KEY_UNAUTHORIZED": {
-          setStatus({
-            failureMessage: "Please log back in and try again",
-            successMessage: ""
-          });
-          break;
-        }
-        case "PASSWORD_CANNOT_CREATE_FOR_OTHERS": {
-          setStatus({
-            failureMessage: "You may only change your own password",
-            successMessage: ""
-          });
+          setStatus("Please log back in and try again");
           break;
         }
         case "PASSWORD_INSECURE": {
@@ -56,29 +46,18 @@ function ManagePassword(props: ManagePasswordProps) {
           break;
         }
         default: {
-          setStatus({
-            failureMessage: "An unknown or network error has occured while trying to reset password.",
-            successMessage: ""
-          });
+          setStatus("An unknown or network error has occured while trying to reset password.");
           break;
         }
       }
     } else {
-      setStatus({
-        failureMessage: "",
-        successMessage: "Password successfully changed."
-      });
-
       props.onSuccess(passwordChangeResult.Ok);
     }
   }
   return <>
     <Formik<ManagePasswordValue>
       onSubmit={onSubmit}
-      initialStatus={{
-        successMessage: "",
-        failureMessage: "",
-      }}
+      initialStatus=""
       initialValues={{
         oldpassword: "",
         password1: "",
@@ -129,8 +108,7 @@ function ManagePassword(props: ManagePasswordProps) {
             <Button type="submit">Change Password</Button>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Text className="text-danger">{props.status.failureMessage}</Form.Text>
-            <Form.Text className="text-success">{props.status.successMessage}</Form.Text>
+            <Form.Text className="text-danger">{props.status}</Form.Text>
           </Form.Group>
         </Form>
       )}

@@ -28,6 +28,16 @@ function RegisterForm(props: RegisterFormProps) {
     let errors: FormikErrors<RegistrationValue> = {};
     let hasError = false;
 
+    if (values.realname.length == 0) {
+      errors.realname = "Invalid name";
+      hasError = true;
+    }
+
+    if (values.username.length == 0 || values.username.length > 20) {
+      errors.realname = "Invalid username";
+      hasError = true;
+    }
+
     if (values.password2 !== values.password1) {
       errors.password2 = "Password does not match";
       hasError = true;
@@ -101,7 +111,8 @@ function RegisterForm(props: RegisterFormProps) {
     // execute callback
     props.onSuccess();
   }
-  const normalizeInput = (e: string) => e.replace(/[^A-Za-z0-9]+/g, "");
+
+  const normalizeInput = (e: string) => e.replace(/[^a-z0-9]+/g, "");
 
   return (
     <Formik
@@ -121,7 +132,7 @@ function RegisterForm(props: RegisterFormProps) {
           noValidate
           onSubmit={fprops.handleSubmit} >
           <Form.Group >
-            <Form.Label >Real Name</Form.Label>
+            <Form.Label>Real Name</Form.Label>
             <Form.Control
               name="realname"
               placeholder="Real Name"
@@ -137,10 +148,9 @@ function RegisterForm(props: RegisterFormProps) {
           <Form.Group >
             <Form.Label >Username</Form.Label>
             <Form.Control
-              name="username"
               placeholder="username"
               value={fprops.values.username}
-              onChange={fprops.handleChange}
+              onChange={e => fprops.setFieldValue("username", normalizeInput(e.target.value))}
               isInvalid={!!fprops.errors.username}
             />
             <Form.Control.Feedback type="invalid">{fprops.errors.username}</Form.Control.Feedback>

@@ -1,9 +1,9 @@
 /// <reference types="react" />
-import { ApiKey, UserData } from '@innexgo/frontend-auth-api';
-interface ManageUserDataProps {
-    apiKey: ApiKey;
+import { UserData, Email, ApiKey } from '@innexgo/frontend-auth-api';
+declare const ManageUserData: (props: {
     userData: UserData;
-    onSuccess: (ud: UserData) => void;
-}
-declare function ManageUserData(props: ManageUserDataProps): JSX.Element;
+    setUserData: (userData: UserData) => void;
+    email: Email;
+    apiKey: ApiKey;
+}) => JSX.Element;
 export default ManageUserData;

@@ -1,165 +1,122 @@
-import { Formik, FormikHelpers, FormikErrors } from 'formik'
-import { Button, Form, } from 'react-bootstrap'
-import { isErr } from '@innexgo/frontend-common';
-import { ApiKey, UserData, userDataNew, } from '@innexgo/frontend-auth-api';
-import parse from 'date-fns/parse';
+import React from 'react';
+import { Table } from 'react-bootstrap';
+import { Action, DisplayModal} from '@innexgo/common-react-components';
+import { Pencil, Lock, EnvelopePlus } from 'react-bootstrap-icons';
 import format from 'date-fns/format';
+import { UserData, Email, ApiKey } from '@innexgo/frontend-auth-api';
 
-const DATEFORMAT = 'yyyy-MM-dd';
+import EditUserDataForm from '../components/EditUserDataForm';
+import SendVerificationChallengeForm from '../components/SendVerificationChallengeForm';
+import ManagePassword from '../components/ManagePassword';
 
-interface ManageUserDataProps {
-  apiKey: ApiKey,
+const ManageUserData = (props: {
   userData: UserData,
-  onSuccess: (ud: UserData) => void
-}
+  setUserData: (userData: UserData) => void,
+  email: Email,
+  apiKey: ApiKey,
+}) => {
 
-function ManageUserData(props: ManageUserDataProps) {
-  type ManageUserDataValue = {
-    realname: string,
-    username: string,
-    dateofbirth: string,
-  }
+  const [sentEmail, setSendEmail] = React.useState(false);
 
-  const onSubmit = async (values: ManageUserDataValue, { setStatus, setErrors }: FormikHelpers<ManageUserDataValue>) => {
-    // Validate input
-    let errors: FormikErrors<ManageUserDataValue> = {};
-    let hasError = false;
+  const [showEditUserData, setShowEditUserData] = React.useState(false);
+  const [showChangeEmail, setShowChangeEmail] = React.useState(false);
+  const [showChangePassword, setShowChangePassword] = React.useState(false);
 
-    let dateofbirth = parse(values.dateofbirth, DATEFORMAT, new Date());
-
-    if (isNaN(dateofbirth.valueOf())) {
-      errors.dateofbirth = `Couldn't parse date, must be in format YYYY-MM-DD`;
-      hasError = true;
-    }
-
-    setErrors(errors);
-    if (hasError) {
-      return;
-    }
-
-    const maybeUserData = await userDataNew({
-      username: values.username,
-      realname: values.realname,
-      dateofbirth: dateofbirth.valueOf(),
-      apiKey: props.apiKey.key,
-    });
-
-    if (isErr(maybeUserData)) {
-      switch (maybeUserData.Err) {
-        case "API_KEY_UNAUTHORIZED": {
-          setStatus({
-            failureMessage: "Please log back in and try again",
-            successMessage: ""
-          });
-          break;
-        }
-        case "USER_USERNAME_INVALID": {
-          setErrors({
-            username: "Invalid username"
-          });
-          break;
-        }
-        case "USER_USERNAME_TAKEN": {
-          setErrors({
-            username: "This username is already taken."
-          });
-          break;
-        }
-        case "USER_REALNAME_INVALID": {
-          setErrors({
-            realname: "Invalid name"
-          });
-          break;
-        }
-        case "USER_DATEOFBIRTH_INVALID": {
-          setErrors({
-            dateofbirth: "Invalid date of birth."
-          });
-          break;
-        }
-        default: {
-          setStatus({
-            failureMessage: "An unknown or network error has occured while trying to change name.",
-            successMessage: ""
-          });
-          break;
-        }
-      }
-    } else {
-      setStatus({
-        failureMessage: "",
-        successMessage: "Successfully updated information."
-      });
-
-      props.onSuccess(maybeUserData.Ok);
-    }
-  }
   return <>
-    <Formik<ManageUserDataValue>
-      onSubmit={onSubmit}
-      initialStatus={{
-        successMessage: "",
-        failureMessage: "",
-      }}
-      initialValues={{
-        realname: props.userData.realname,
-        username: props.userData.username,
-        dateofbirth: format(props.userData.dateofbirth, DATEFORMAT),
-      }}
+    <Table hover bordered>
+      <tbody>
+        <tr>
+          <th>Name</th>
+          <td>{props.userData.realname}</td>
+        </tr>
+        <tr>
+          <th>Username</th>
+          <td>{props.userData.username}</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</th>
+          <td>{format(props.userData.dateofbirth, 'MMM do, yyyy')}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>
+            <table>
+              <tr>
+                <td>
+                  {props.email.verificationChallenge.email}
+                  {sentEmail ? <span className="text-danger">*</span> : null}
+                </td>
+              </tr>
+              {
+                sentEmail
+                  ? <tr>
+                    <td>
+                      <small className="text-muted">Check your email for instructions to finish the email change process.</small>
+                    </td>
+                  </tr>
+                  : null
+              }
+            </table>
+          </td>
+        </tr>
+
+      </tbody>
+    </Table>
+    <Action
+      title="Edit Personal Information"
+      icon={Pencil}
+      onClick={() => setShowEditUserData(true)}
+    />
+    <Action
+      title="Change Email"
+      icon={EnvelopePlus}
+      onClick={() => setShowChangeEmail(true)}
+    />
+    <Action
+      title="Change Password"
+      icon={Lock}
+      onClick={() => setShowChangePassword(true)}
+    />
+
+    <DisplayModal
+      title="Edit Personal Information"
+      show={showEditUserData}
+      onClose={() => setShowEditUserData(false)}
     >
-      {(props) => (
-        <Form
-          noValidate
-          onSubmit={props.handleSubmit} >
-          <Form.Group >
-            <Form.Label >Real Name</Form.Label>
-            <Form.Control
-              name="realname"
-              placeholder="Real Name"
-              value={props.values.realname}
-              onChange={props.handleChange}
-              isInvalid={!!props.errors.realname}
-            />
-            <Form.Control.Feedback type="invalid">{props.errors.realname}</Form.Control.Feedback>
-            <Form.Text className="text-muted">
-              Please enter what you would like others to call you.
-            </Form.Text>
-          </Form.Group>
-          <Form.Group >
-            <Form.Label >Username</Form.Label>
-            <Form.Control
-              name="username"
-              placeholder="username"
-              value={props.values.username}
-              onChange={props.handleChange}
-              isInvalid={!!props.errors.username}
-            />
-            <Form.Control.Feedback type="invalid">{props.errors.username}</Form.Control.Feedback>
-            <Form.Text className="text-muted">
-              Please enter a unique username.
-            </Form.Text>
-          </Form.Group>
-          <Form.Group >
-            <Form.Label >Date of Birth</Form.Label>
-            <Form.Control
-              name="dateofbirth"
-              placeholder="YYYY-MM-DD"
-              value={props.values.dateofbirth}
-              onChange={props.handleChange}
-              isInvalid={!!props.errors.dateofbirth}
-            />
-            <Form.Control.Feedback type="invalid">{props.errors.dateofbirth}</Form.Control.Feedback>
-            <Form.Text className="text-muted">
-            </Form.Text>
-          </Form.Group>
-          <br />
-          <Button type="submit">Update</Button>
-          <br />
-          <Form.Text className="text-danger">{props.status.failureMessage}</Form.Text>
-          <Form.Text className="text-success">{props.status.successMessage}</Form.Text>
-        </Form>
-      )}
-    </Formik>
+      <EditUserDataForm
+        userData={props.userData}
+        apiKey={props.apiKey}
+        setUserData={userData => {
+          setShowEditUserData(false);
+          props.setUserData(userData);
+        }}
+      />
+    </DisplayModal>
+    <DisplayModal
+      title="Change Email"
+      show={showChangePassword}
+      onClose={() => setShowChangePassword(false)}
+    >
+      <ManagePassword
+        apiKey={props.apiKey}
+        onSuccess={() => {
+          setShowChangePassword(false);
+        }}
+      />
+    </DisplayModal>
+    <DisplayModal
+      title="Change Email"
+      show={showChangeEmail}
+      onClose={() => setShowChangeEmail(false)}
+    >
+      <SendVerificationChallengeForm
+        toParent={false}
+        initialEmailAddress={props.email.verificationChallenge.email}
+        apiKey={props.apiKey}
+        setVerificationChallenge={() => { setShowChangeEmail(false); setSendEmail(true) }}
+      />
+    </DisplayModal>
+
   </>
 }
 

@@ -39,25 +39,18 @@ function ForgotPasswordForm(props: ForgotPasswordFormProps) {
           break;
         }
         case "EMAIL_COOLDOWN": {
-          setErrors({ email: "Please wait 15 minutes before trying to send more emails." });
+          setStatus("Please wait 15 minutes before trying to send more emails.");
           break;
         }
         default: {
-          setStatus({
-            failureMessage: "An unknown or network error has occured while trying to reset the password.",
-            successMessage: ""
-          });
+          setStatus("An unknown or network error has occured while trying to reset the password.");
           break;
         }
       }
       return;
-    } else {
-      setStatus({
-        failureMessage: "",
-        successMessage: "A reset email has been sent."
-      });
-      props.onSuccess();
     }
+
+    props.onSuccess();
   }
 
   return (
@@ -66,10 +59,7 @@ function ForgotPasswordForm(props: ForgotPasswordFormProps) {
       initialValues={{
         email: "",
       }}
-      initialStatus={{
-        failureMessage: "",
-        successMessage: ""
-      }}
+      initialStatus=""
     >
       {(props) => (
         <Form
@@ -91,8 +81,7 @@ function ForgotPasswordForm(props: ForgotPasswordFormProps) {
             <Button type="submit">Submit</Button>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Text className="text-danger">{props.status.failureMessage}</Form.Text>
-            <Form.Text className="text-success">{props.status.successMessage}</Form.Text>
+            <Form.Text className="text-danger">{props.status}</Form.Text>
           </Form.Group>
         </Form>
       )}

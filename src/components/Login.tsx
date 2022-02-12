@@ -136,7 +136,7 @@ function Login(props: LoginProps) {
             {/* When making a form, the `type` prop should usually be "text" */}
             {/* unless its an email address or a password */}
             <Form.Control
-              name="emailOrUsername "
+              name="emailOrUsername"
               type="email"
               placeholder="Email"
               value={fprops.values.emailOrUsername }

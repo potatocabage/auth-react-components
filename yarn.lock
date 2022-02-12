@@ -9,15 +9,15 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@innexgo/common-react-components@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.10.tgz#c6fbc3b8e40d360e386d461b2380a520a58f193c"
-  integrity sha512-OcDBQq/mRzi+OOEy++3yML8HFdkedc5qfwVy9kc4GDBfYQ5k7oIA02yNdoBtO/IH8AYGMXgvw2PhyPxC8CSrCA==
+"@innexgo/common-react-components@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.11.tgz#6d3803ea6a8eda3b9bbde7aaade5d9d13b2435fd"
+  integrity sha512-yO1hHuhOj/Orkim+st22PIjwds9nDcly+2yCHqQh/s9RnEFT5k1pCZ3DYBkI845H8XtP2jGH1vQ3LJEMSPM2uw==
 
-"@innexgo/frontend-auth-api@^0.2.35":
-  version "0.2.35"
-  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.35.tgz#7dc44798c5319c03625af7edd8ee450192b4e907"
-  integrity sha512-5RjiK/CTxEkFwhY46N8jOVBAPfOcpawCCq8SR9GcCErIQ1bC93g+wrwn+D0KVhdfcCKNLgFzZsakNH1zZlc3Rw==
+"@innexgo/frontend-auth-api@^0.2.36":
+  version "0.2.36"
+  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.36.tgz#fbf703dfaedf4154710f097cdcc402480db08ba6"
+  integrity sha512-+m0WmLwcN2p3mz128XvvsicdZUphB3X4qlIJiZDhPPJ6N1lJpt959CGc+p+2FhRBy7PqHiU/1Gg2sLlbfHv21A==
 
 "@innexgo/frontend-common@^0.0.12":
   version "0.0.12"
