@@ -38,8 +38,8 @@ function ForgotPasswordForm(props: ForgotPasswordFormProps) {
           setErrors({ email: "This email address is invalid." });
           break;
         }
-        case "EMAIL_UNKNOWN": {
-          setErrors({ email: "Unable to send mail to this address. Try again later." });
+        case "EMAIL_COOLDOWN": {
+          setErrors({ email: "Please wait 15 minutes before trying to send more emails." });
           break;
         }
         default: {

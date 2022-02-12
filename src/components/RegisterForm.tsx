@@ -1,24 +1,25 @@
 import { Button, Form } from 'react-bootstrap'
 import { Formik, FormikHelpers, FormikErrors } from 'formik'
-import { userNew } from '@innexgo/frontend-auth-api';
+import { userNew, ApiKey, apiKeyNewWithUsername } from '@innexgo/frontend-auth-api';
 import { isErr } from '@innexgo/frontend-common';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 
 type RegisterFormProps = {
   tosUrl?: string,
   onSuccess: () => void
 }
 
+const DATEFORMAT = 'yyyy-MM-dd';
+
 function RegisterForm(props: RegisterFormProps) {
 
   type RegistrationValue = {
-    name: string,
-    email: string,
+    username: string,
+    realname: string,
+    dateofbirth: string,
     password1: string,
     password2: string,
-    // whether the olderThan13 is altered
-    touchedAge: boolean,
-    olderThan13: boolean,
-    parentEmail: string,
     terms: boolean,
   }
 
@@ -26,30 +27,9 @@ function RegisterForm(props: RegisterFormProps) {
     // Validate input
     let errors: FormikErrors<RegistrationValue> = {};
     let hasError = false;
-    if (values.name === "") {
-      errors.name = "Please enter what you'd like us to call you";
-      hasError = true;
-    }
-    if (!values.email.includes("@")) {
-      errors.email = "Please enter your email";
-      hasError = true;
-    }
+
     if (values.password2 !== values.password1) {
       errors.password2 = "Password does not match";
-      hasError = true;
-    }
-    if (!values.touchedAge) {
-      errors.olderThan13 = "Please pick an option";
-      hasError = true;
-    }
-
-    if (!values.olderThan13 && !values.parentEmail.includes("@")) {
-      errors.parentEmail = "Please enter a parent email";
-      hasError = true;
-    }
-
-    if(values.parentEmail === values.email) {
-      errors.parentEmail = "Parent email must be different from your email";
       hasError = true;
     }
 
@@ -58,36 +38,50 @@ function RegisterForm(props: RegisterFormProps) {
       hasError = true;
     }
 
+    let dateofbirth = parse(values.dateofbirth, DATEFORMAT, new Date());
+
+    if (isNaN(dateofbirth.valueOf())) {
+      errors.dateofbirth = `Couldn't parse date, must be in format YYYY-MM-DD`;
+      hasError = true;
+    }
+
+
     fprops.setErrors(errors);
     if (hasError) {
       return;
     }
 
     const maybeUserData = await userNew({
-      userName: values.name,
-      userPassword: values.password1,
-      userEmail: values.email,
-      parentEmail: values.olderThan13 ? undefined : values.parentEmail
+      username: values.username,
+      realname: values.realname,
+      dateofbirth: dateofbirth.valueOf(),
+      password: values.password1,
     });
 
     if (isErr(maybeUserData)) {
       // otherwise display errors
       switch (maybeUserData.Err) {
-        case "USER_EMAIL_EMPTY": {
+        case "USER_USERNAME_INVALID": {
           fprops.setErrors({
-            name: "Please enter your email."
+            username: "Invalid username"
           });
           break;
         }
-        case "USER_NAME_EMPTY": {
+        case "USER_USERNAME_TAKEN": {
           fprops.setErrors({
-            name: "Please enter what you'd like us to call you."
+            username: "This username is already taken."
           });
           break;
         }
-        case "USER_EXISTENT": {
+        case "USER_REALNAME_INVALID": {
           fprops.setErrors({
-            email: "A user with this email already exists."
+            realname: "Invalid name"
+          });
+          break;
+        }
+        case "USER_DATEOFBIRTH_INVALID": {
+          fprops.setErrors({
+            dateofbirth: "Invalid date of birth."
           });
           break;
         }
@@ -98,20 +92,12 @@ function RegisterForm(props: RegisterFormProps) {
           break;
         }
         default: {
-          fprops.setStatus({
-            failureMessage: "An unknown or network error has occured while trying to register.",
-            successMessage: ""
-          });
+          fprops.setStatus("An unknown or network error has occured while trying to register.");
           break;
         }
       }
       return;
     }
-
-    fprops.setStatus({
-      failureMessage: "",
-      successMessage: "We've sent an email to verify your address."
-    });
     // execute callback
     props.onSuccess();
   }
@@ -120,130 +106,100 @@ function RegisterForm(props: RegisterFormProps) {
   return (
     <Formik
       onSubmit={onSubmit}
-      initialStatus={{
-        failureMessage: "",
-        successMessage: "",
-      }}
+      initialStatus=""
       initialValues={{
-        name: "",
-        email: "",
+        username: "",
+        realname: "",
+        dateofbirth: "",
         password1: "",
         password2: "",
         terms: false,
-        touchedAge: false,
-        olderThan13: true,
-        parentEmail: ""
       }}
     >
       {(fprops) => <>
         <Form
           noValidate
           onSubmit={fprops.handleSubmit} >
-          <div hidden={fprops.status.successMessage !== ""}>
-            <Form.Group className="mb-3">
-              <Form.Label >Name</Form.Label>
-              <Form.Control
-                name="name"
-                type="text"
-                placeholder="Name"
-                value={fprops.values.name}
-                onChange={e => fprops.setFieldValue("name", normalizeInput(e.target.value))}
-                isInvalid={!!fprops.errors.name}
-              />
-              <Form.Control.Feedback type="invalid">{fprops.errors.name}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label >Email</Form.Label>
-              <Form.Control
-                name="email"
-                type="email"
-                placeholder="Email"
-                value={fprops.values.email}
-                onChange={fprops.handleChange}
-                isInvalid={!!fprops.errors.email}
-              />
-              <Form.Control.Feedback type="invalid">{fprops.errors.email}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label >Password</Form.Label>
-              <Form.Control
-                name="password1"
-                type="password"
-                placeholder="Password"
-                value={fprops.values.password1}
-                onChange={fprops.handleChange}
-                isInvalid={!!fprops.errors.password1}
-              />
-              <Form.Control.Feedback type="invalid">{fprops.errors.password1}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label >Confirm Password</Form.Label>
-              <Form.Control
-                name="password2"
-                type="password"
-                placeholder="Confirm Password"
-                value={fprops.values.password2}
-                onChange={fprops.handleChange}
-                isInvalid={!!fprops.errors.password2}
-              />
-              <Form.Control.Feedback type="invalid">{fprops.errors.password2}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Check className="form-check">
-                <Form.Check.Input
-                  type="radio"
-                  name="olderThan13"
-                  isInvalid={!!fprops.errors.olderThan13}
-                  onChange={() => {
-                    fprops.setFieldValue('olderThan13', false);
-                    fprops.setFieldValue('touchedAge', true)
-                  }}
-                />
-                <Form.Check.Label>I am younger than 13</Form.Check.Label>
-              </Form.Check>
-              <Form.Check className="form-check">
-                <Form.Check.Input
-                  type="radio"
-                  name="olderThan13"
-                  isInvalid={!!fprops.errors.olderThan13}
-                  onChange={() => {
-                    fprops.setFieldValue('olderThan13', true);
-                    fprops.setFieldValue('touchedAge', true)
-                  }}
-                />
-                <Form.Check.Label>I am older than 13</Form.Check.Label>
-                <Form.Control.Feedback type="invalid">{fprops.errors.olderThan13}</Form.Control.Feedback>
-              </Form.Check>
-            </Form.Group>
-            <Form.Group hidden={fprops.values.olderThan13} className="mb-3">
-              <Form.Label>Parent Email</Form.Label>
-              <Form.Control
-                name="parentEmail"
-                type="email"
-                placeholder="Parent Email"
-                value={fprops.values.parentEmail}
-                onChange={fprops.handleChange}
-                isInvalid={!!fprops.errors.parentEmail}
-              />
-              <Form.Control.Feedback type="invalid">{fprops.errors.parentEmail}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Check className="mb-3 form-check" hidden={props.tosUrl === undefined}>
-              <Form.Check.Input
-                name="terms"
-                checked={fprops.values.terms}
-                onChange={fprops.handleChange}
-                isInvalid={!!fprops.errors.terms}
-              />
-              <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
-              <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
-            </Form.Check>
-            <br />
-            <Button type="submit">Submit Form</Button>
-            <Form.Group>
-              <Form.Text className="text-danger">{fprops.status.failureMessage}</Form.Text>
-            </Form.Group>
-          </div>
-          <Form.Text className="text-success">{fprops.status.successMessage}</Form.Text>
+          <Form.Group >
+            <Form.Label >Real Name</Form.Label>
+            <Form.Control
+              name="realname"
+              placeholder="Real Name"
+              value={fprops.values.realname}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.realname}
+            />
+            <Form.Control.Feedback type="invalid">{fprops.errors.realname}</Form.Control.Feedback>
+            <Form.Text className="text-muted">
+              Please enter what you would like others to call you.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group >
+            <Form.Label >Username</Form.Label>
+            <Form.Control
+              name="username"
+              placeholder="username"
+              value={fprops.values.username}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.username}
+            />
+            <Form.Control.Feedback type="invalid">{fprops.errors.username}</Form.Control.Feedback>
+            <Form.Text className="text-muted">
+              Please enter a unique username.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group >
+            <Form.Label >Date of Birth</Form.Label>
+            <Form.Control
+              name="dateofbirth"
+              placeholder="YYYY-MM-DD"
+              value={fprops.values.dateofbirth}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.dateofbirth}
+            />
+            <Form.Control.Feedback type="invalid">{fprops.errors.dateofbirth}</Form.Control.Feedback>
+            <Form.Text className="text-muted">
+            </Form.Text>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label >Password</Form.Label>
+            <Form.Control
+              name="password1"
+              type="password"
+              placeholder="Password"
+              value={fprops.values.password1}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.password1}
+            />
+            <Form.Control.Feedback type="invalid">{fprops.errors.password1}</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label >Confirm Password</Form.Label>
+            <Form.Control
+              name="password2"
+              type="password"
+              placeholder="Confirm Password"
+              value={fprops.values.password2}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.password2}
+            />
+            <Form.Control.Feedback type="invalid">{fprops.errors.password2}</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Check className="mb-3 form-check" hidden={props.tosUrl === undefined}>
+            <Form.Check.Input
+              name="terms"
+              checked={fprops.values.terms}
+              onChange={fprops.handleChange}
+              isInvalid={!!fprops.errors.terms}
+            />
+            <Form.Check.Label>Agree to <a target="_blank" rel="noopener noreferrer" href={props.tosUrl}>terms of service</a></Form.Check.Label>
+            <Form.Control.Feedback type="invalid">{fprops.errors.terms}</Form.Control.Feedback>
+          </Form.Check>
+          <br />
+          <Button type="submit">Submit Form</Button>
+          <Form.Group>
+            <Form.Text className="text-danger">{fprops.status}</Form.Text>
+          </Form.Group>
         </Form>
       </>}
     </Formik>

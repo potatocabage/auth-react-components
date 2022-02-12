@@ -21,7 +21,7 @@ function AuthenticatedComponentRenderer({
 
   const isAuthenticated = apiKey !== null &&
     apiKey.creationTime + apiKey.duration > Date.now() &&
-    apiKey.apiKeyKind !== "CANCEL";
+    apiKey.apiKeyKind === "VALID";
 
   return isAuthenticated
     ? <AuthenticatedComponent apiKey={apiKey!} setApiKey={setApiKey} branding={branding} />
@@ -30,7 +30,7 @@ function AuthenticatedComponentRenderer({
         <div className="card mx-auto my-auto">
           <div className="card-body">
             <h5 className="card-title">Login</h5>
-            <Login onSuccess={x => setApiKey(x)} />
+            <Login branding={branding} onSuccess={x => setApiKey(x)} />
           </div>
         </div>
       </div>

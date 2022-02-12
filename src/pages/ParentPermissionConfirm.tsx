@@ -1,26 +1,26 @@
 import React from 'react';
 import { Card, Button, Form } from "react-bootstrap";
 import { Formik, FormikHelpers, FormikErrors } from 'formik'
-import { ParentPermission, parentPermissionNew } from '@innexgo/frontend-auth-api';
+import { Email, emailNew } from '@innexgo/frontend-auth-api';
 import { isErr } from '@innexgo/frontend-common';
 
 import { SimpleLayout, BrandedComponentProps } from '@innexgo/common-react-components';
 
-type CreateParentPermissionProps = {
+type CreateEmailProps = {
   verificationChallengeKey: string;
   tosUrl?: string;
-  postSubmit: (parentPermission: ParentPermission) => void;
+  postSubmit: (email: Email) => void;
 }
 
-function CreateParentPermission(props: CreateParentPermissionProps) {
-  type CreateParentPermissionValue = {
+function CreateEmail(props: CreateEmailProps) {
+  type CreateEmailValue = {
     terms: boolean,
   }
 
-  const onSubmit = async (values: CreateParentPermissionValue,
-    fprops: FormikHelpers<CreateParentPermissionValue>) => {
+  const onSubmit = async (values: CreateEmailValue,
+    fprops: FormikHelpers<CreateEmailValue>) => {
 
-    let errors: FormikErrors<CreateParentPermissionValue> = {};
+    let errors: FormikErrors<CreateEmailValue> = {};
 
     // Validate input
 
@@ -34,12 +34,12 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
       return;
     }
 
-    const maybeParentPermission = await parentPermissionNew({
+    const maybeEmail = await emailNew({
       verificationChallengeKey: props.verificationChallengeKey,
     });
 
-    if (isErr(maybeParentPermission)) {
-      switch (maybeParentPermission.Err) {
+    if (isErr(maybeEmail)) {
+      switch (maybeEmail.Err) {
         case "VERIFICATION_CHALLENGE_NONEXISTENT": {
           fprops.setStatus({
             failureResult: "This link is invalid.",
@@ -81,14 +81,14 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
 
     fprops.setStatus({
       failureResult: "",
-      successResult: "ParentPermission Created"
+      successResult: "Email Created"
     });
     // execute callback
-    props.postSubmit(maybeParentPermission.Ok);
+    props.postSubmit(maybeEmail.Ok);
   }
 
   return <>
-    <Formik<CreateParentPermissionValue>
+    <Formik<CreateEmailValue>
       onSubmit={onSubmit}
       initialValues={{
         //name: "",
@@ -128,7 +128,7 @@ function CreateParentPermission(props: CreateParentPermissionProps) {
 
 function ParentPermissionConfirm(props: BrandedComponentProps) {
 
-  const [parentPermission, setParentPermission] = React.useState<ParentPermission | null>(null);
+  const [email, setEmail] = React.useState<Email | null>(null);
 
   return (
     <SimpleLayout branding={props.branding}>
@@ -137,15 +137,15 @@ function ParentPermissionConfirm(props: BrandedComponentProps) {
           <Card.Body>
             <Card.Title>Parent Permission</Card.Title>
             {
-              parentPermission !== null
+              email !== null
                 ? <Card.Text>Thank you, your response has been noted.</Card.Text>
-                : <CreateParentPermission
+                : <CreateEmail
                 tosUrl={props.branding.tosUrl}
                   verificationChallengeKey={
                     (new URLSearchParams(window.location.search).get("verificationChallengeKey") ?? "")
                       .replace(' ', '+')
                   }
-                  postSubmit={e => setParentPermission(e)}
+                  postSubmit={e => setEmail(e)}
                 />
             }
           </Card.Body>

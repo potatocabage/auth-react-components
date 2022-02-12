@@ -1,6 +1,7 @@
 import { Formik, FormikHelpers, FormikErrors } from 'formik'
 import { Button, Form, } from 'react-bootstrap'
-import { ApiKey, apiKeyNewValid, } from '@innexgo/frontend-auth-api';
+import { ApiKey, apiKeyNewWithEmail, apiKeyNewWithUsername } from '@innexgo/frontend-auth-api';
+import { Branding } from '@innexgo/common-react-components';
 import { isErr } from '@innexgo/frontend-common';
 
 
@@ -8,6 +9,7 @@ import { isErr } from '@innexgo/frontend-common';
 // In general, the onSuccess callback should make sure to hide the form so that the 
 // user doesn't accidentally double submit.
 interface LoginProps {
+  branding: Branding,
   onSuccess: (apiKey: ApiKey) => void
 }
 
@@ -17,7 +19,7 @@ function Login(props: LoginProps) {
   // Note that fields don't just have to be strings. 
   // You could use numbers, booleans, or more complex objects if you wanted.
   type LoginValue = {
-    email: string,
+    emailOrUsername: string,
     password: string,
   }
 
@@ -32,8 +34,8 @@ function Login(props: LoginProps) {
     // we start off by assuming no errors
     let errors: FormikErrors<LoginValue> = {};
     let hasError = false;
-    if (values.email === "") {
-      errors.email = "Please enter your email";
+    if (values.emailOrUsername === "") {
+      errors.emailOrUsername = "Please enter your email";
       hasError = true;
     }
     if (values.password === "") {
@@ -49,12 +51,23 @@ function Login(props: LoginProps) {
       return;
     }
 
+    let duration = 5 * 60 * 60 * 1000;
+
     // we make our request here
-    const maybeApiKey = await apiKeyNewValid({
-      userEmail: values.email,
-      userPassword: values.password,
-      duration: 5 * 60 * 60 * 1000
-    });
+    let maybeApiKey = values.emailOrUsername.includes('@')
+      // if the email or username has an @ sign, send it to email
+      ? await apiKeyNewWithEmail({
+        email: values.emailOrUsername,
+        password: values.password,
+        duration: duration,
+      })
+      // if there's no @ sign, then treat it as a username
+      : await apiKeyNewWithUsername({
+        username: values.emailOrUsername,
+        password: values.password,
+        duration: duration,
+      })
+      ;
 
     // check if the operation was successful
     if (isErr(maybeApiKey)) {
@@ -62,19 +75,25 @@ function Login(props: LoginProps) {
       switch (maybeApiKey.Err) {
         case "EMAIL_NONEXISTENT": {
           setErrors({
-            email: "No such email exists"
+            emailOrUsername: "No such email exists"
           });
           break;
         }
         case "USER_NONEXISTENT": {
           setErrors({
-            email: "No such user exists"
+            emailOrUsername: "No such user exists"
           });
           break;
         }
         case "PASSWORD_INCORRECT": {
           setErrors({
             password: "Your password is incorrect"
+          });
+          break;
+        }
+        case "PASSWORD_NONEXISTENT": {
+          setErrors({
+            password: "No currently valid password found, try using the 'forgot password' feature."
           });
           break;
         }
@@ -101,7 +120,7 @@ function Login(props: LoginProps) {
       initialStatus=""
       initialValues={{
         // these are the default values the form will start with
-        email: "",
+        emailOrUsername : "",
         password: "",
       }}
     >
@@ -117,15 +136,15 @@ function Login(props: LoginProps) {
             {/* When making a form, the `type` prop should usually be "text" */}
             {/* unless its an email address or a password */}
             <Form.Control
-              name="email"
+              name="emailOrUsername "
               type="email"
               placeholder="Email"
-              value={fprops.values.email}
+              value={fprops.values.emailOrUsername }
               onChange={fprops.handleChange}
-              isInvalid={!!fprops.errors.email}
+              isInvalid={!!fprops.errors.emailOrUsername }
             />
             {/* Feedback fields aren't usually displayed unless we called `setError` in `onSubmit` */}
-            <Form.Control.Feedback type="invalid"> {fprops.errors.email} </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid"> {fprops.errors.emailOrUsername } </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
@@ -150,7 +169,7 @@ function Login(props: LoginProps) {
           <Form.Text className="text-danger mb-3">{fprops.status}</Form.Text>
           <Form.Group className="mb-3">
             <Form.Text>
-              <a href="/forgot_password">Forgot Password?</a>
+              <a href={props.branding.forgotPasswordUrl}>Forgot Password?</a>
             </Form.Text>
           </Form.Group>
         </Form>

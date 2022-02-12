@@ -5,6 +5,7 @@ import { unwrap } from '@innexgo/frontend-common';
 import { Async, AsyncProps } from 'react-async';
 import { Icon, BoxArrowLeft as ExitAppIcon, List as MenuIcon } from 'react-bootstrap-icons';
 import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button';
 
 export interface Preferences {
     collapsed: boolean,
@@ -166,7 +167,7 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
                             <Async.Fulfilled<UserData>>{ud =>
                                 preferences.collapsed
                                     ? false
-                                    : <h6>Welcome, {ud.name}</h6>
+                                    : <h6>Welcome, {ud.realname}</h6>
                             }
                             </Async.Fulfilled>
                         </Async>
@@ -188,12 +189,12 @@ const InnerLayout: React.FunctionComponent<React.PropsWithChildren<InnerLayoutPr
                         </Modal.Header>
                         <Modal.Body>Are you sure you want to log out?</Modal.Body>
                         <Modal.Footer>
-                            <button onClick={() => props.logoutCallback()}>
+                            <Button variant="primary" onClick={() => props.logoutCallback()}>
                                 Yes
-                            </button>
-                            <button onClick={handleClose}>
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
                                 No
-                            </button>
+                            </Button>
                         </Modal.Footer>
                     </Modal>
                 </nav>

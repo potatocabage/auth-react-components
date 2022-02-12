@@ -9,15 +9,15 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@innexgo/common-react-components@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.9.tgz#5e9495b705c4c5cbe5cc2bb27b8760cb93d03261"
-  integrity sha512-QdR2CXoTlSOUZoxi7ooUlUIksfr/YRFJ37obz9mf33m2+yvCnrruTOCIF98bep8fpzEbcZCwwnrvEbKXQDcI+w==
+"@innexgo/common-react-components@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.10.tgz#c6fbc3b8e40d360e386d461b2380a520a58f193c"
+  integrity sha512-OcDBQq/mRzi+OOEy++3yML8HFdkedc5qfwVy9kc4GDBfYQ5k7oIA02yNdoBtO/IH8AYGMXgvw2PhyPxC8CSrCA==
 
-"@innexgo/frontend-auth-api@^0.2.32":
-  version "0.2.32"
-  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.32.tgz#825601294da823d52250f6324bbb93f07bcc8bed"
-  integrity sha512-zkimRxpZK/13JPblv0lyJvy/Kdcap4cGnB6HXFKyegODCmpJtZf/3ZwR7nSvNau3irRXu08MG2pZYZkPDGL2fg==
+"@innexgo/frontend-auth-api@^0.2.35":
+  version "0.2.35"
+  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.35.tgz#7dc44798c5319c03625af7edd8ee450192b4e907"
+  integrity sha512-5RjiK/CTxEkFwhY46N8jOVBAPfOcpawCCq8SR9GcCErIQ1bC93g+wrwn+D0KVhdfcCKNLgFzZsakNH1zZlc3Rw==
 
 "@innexgo/frontend-common@^0.0.12":
   version "0.0.12"
@@ -151,6 +151,11 @@ csstype@^3.0.2:
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
   integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
+
+date-fns@^2.28.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
+  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
 deepmerge@^2.1.1:
   version "2.2.1"
@@ -332,11 +337,6 @@ react-bootstrap@^2.1.2:
     react-transition-group "^4.4.1"
     uncontrollable "^7.2.1"
     warning "^4.0.3"
-
-react-confirm-alert@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.8.0.tgz#b3538c412432226e817478d3a2614538196ab204"
-  integrity sha512-qvNjJWuWUpTh+q4NecUjCMIWLNDl8IwW6JRIky5pzoiFBXsLWSA2Z1VsaDsQedwgyxEpKnMEJFETkDogBpv/kA==
 
 react-dom@^17.0.2:
   version "17.0.2"
