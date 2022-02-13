@@ -2,22 +2,22 @@
 # yarn lockfile v1
 
 
-"@babel/runtime@^7.13.16", "@babel/runtime@^7.14.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.13.16", "@babel/runtime@^7.14.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.7":
   version "7.17.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
   integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@innexgo/common-react-components@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.11.tgz#6d3803ea6a8eda3b9bbde7aaade5d9d13b2435fd"
-  integrity sha512-yO1hHuhOj/Orkim+st22PIjwds9nDcly+2yCHqQh/s9RnEFT5k1pCZ3DYBkI845H8XtP2jGH1vQ3LJEMSPM2uw==
+"@innexgo/common-react-components@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@innexgo/common-react-components/-/common-react-components-0.1.12.tgz#276a3187bbfa15545ad6edab97ecd3ed08a4c933"
+  integrity sha512-2jh9y+RVKdUYqIGcuYIT7OzLehlfhEJ1ooK9qwwbGPTuJVnGojcFfPxNUcb8CP+EvUm7VMo3iGkbvCCzc5e5wg==
 
-"@innexgo/frontend-auth-api@^0.2.36":
-  version "0.2.36"
-  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.36.tgz#fbf703dfaedf4154710f097cdcc402480db08ba6"
-  integrity sha512-+m0WmLwcN2p3mz128XvvsicdZUphB3X4qlIJiZDhPPJ6N1lJpt959CGc+p+2FhRBy7PqHiU/1Gg2sLlbfHv21A==
+"@innexgo/frontend-auth-api@^0.2.37":
+  version "0.2.37"
+  resolved "https://registry.yarnpkg.com/@innexgo/frontend-auth-api/-/frontend-auth-api-0.2.37.tgz#607975b3056f0ea9ddec5a90ad115d22c8ab3d20"
+  integrity sha512-XQR8s4JbheAdIjBJRRFi8z5WCqiOnPeRtSKjikBfF06Rtdq2AMFFPCrLL53wBgRBM/qZBFtnyjNsFgG+ZEL6jw==
 
 "@innexgo/frontend-common@^0.0.12":
   version "0.0.12"
@@ -207,6 +207,13 @@ glob-parent@~5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
+history@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/history/-/history-5.2.0.tgz#7cdd31cf9bac3c5d31f09c231c9928fad0007b7c"
+  integrity sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+
 hoist-non-react-statics@^3.3.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
@@ -361,6 +368,21 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-router-dom@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.2.1.tgz#32ec81829152fbb8a7b045bf593a22eadf019bec"
+  integrity sha512-I6Zax+/TH/cZMDpj3/4Fl2eaNdcvoxxHoH1tYOREsQ22OKDYofGebrNm6CTPUcvLvZm63NL/vzCYdjf9CUhqmA==
+  dependencies:
+    history "^5.2.0"
+    react-router "6.2.1"
+
+react-router@6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.2.1.tgz#be2a97a6006ce1d9123c28934e604faef51448a3"
+  integrity sha512-2fG0udBtxou9lXtK97eJeET2ki5//UWfQSl1rlJ7quwe6jrktK9FCCc8dQb5QY6jAv3jua8bBQRhhDOM/kVRsg==
+  dependencies:
+    history "^5.2.0"
 
 react-transition-group@^4.4.1:
   version "4.4.2"

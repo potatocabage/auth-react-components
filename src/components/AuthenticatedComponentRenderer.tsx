@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../components/Login";
+import LoginForm from "../components/LoginForm";
 import { ApiKey } from "@innexgo/frontend-auth-api";
 import AuthenticatedComponentProps from '../components/AuthenticatedComponentProps';
 import { SimpleLayout, Branding } from '@innexgo/common-react-components';
@@ -30,7 +30,7 @@ function AuthenticatedComponentRenderer({
         <div className="card mx-auto my-auto">
           <div className="card-body">
             <h5 className="card-title">Login</h5>
-            <Login branding={branding} onSuccess={x => setApiKey(x)} />
+            <LoginForm branding={branding} onSuccess={x => setApiKey(x)} />
           </div>
         </div>
       </div>

@@ -8,17 +8,17 @@ import { isErr } from '@innexgo/frontend-common';
 // onSuccess is a callback that will be run once the user has successfully logged in.
 // In general, the onSuccess callback should make sure to hide the form so that the 
 // user doesn't accidentally double submit.
-interface LoginProps {
+interface LoginFormProps {
   branding: Branding,
   onSuccess: (apiKey: ApiKey) => void
 }
 
-function Login(props: LoginProps) {
+function LoginForm(props: LoginFormProps) {
 
   // This represents the state stored in the form. 
   // Note that fields don't just have to be strings. 
   // You could use numbers, booleans, or more complex objects if you wanted.
-  type LoginValue = {
+  type LoginFormValue = {
     emailOrUsername: string,
     password: string,
   }
@@ -27,12 +27,12 @@ function Login(props: LoginProps) {
 
   // here, we're making use of JavaScript's destructuring assignment: 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-  const onSubmit = async (values: LoginValue, { setStatus, setErrors }: FormikHelpers<LoginValue>) => {
+  const onSubmit = async (values: LoginFormValue, { setStatus, setErrors }: FormikHelpers<LoginFormValue>) => {
     // Validate input
 
 
     // we start off by assuming no errors
-    let errors: FormikErrors<LoginValue> = {};
+    let errors: FormikErrors<LoginFormValue> = {};
     let hasError = false;
     if (values.emailOrUsername === "") {
       errors.emailOrUsername = "Please enter your email";
@@ -115,7 +115,7 @@ function Login(props: LoginProps) {
   // Notice how Formik is a Generic component that does type checking
   // This helps ensure we make fewer mistakes
   return <>
-    <Formik<LoginValue>
+    <Formik<LoginFormValue>
       onSubmit={onSubmit}
       initialStatus=""
       initialValues={{
@@ -178,4 +178,4 @@ function Login(props: LoginProps) {
   </>
 }
 
-export default Login;
+export default LoginForm;

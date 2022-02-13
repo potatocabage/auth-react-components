@@ -7,7 +7,7 @@ import format from 'date-fns/format';
 
 type RegisterFormProps = {
   tosUrl?: string,
-  onSuccess: () => void
+  onSuccess: (a:ApiKey) => void
 }
 
 const DATEFORMAT = 'yyyy-MM-dd';
@@ -61,16 +61,18 @@ function RegisterForm(props: RegisterFormProps) {
       return;
     }
 
-    const maybeUserData = await userNew({
+    const maybeApiKey = await userNew({
       username: values.username,
       realname: values.realname,
       dateofbirth: dateofbirth.valueOf(),
       password: values.password1,
+      // 1 hour
+      apiKeyDuration: 60*60*1000
     });
 
-    if (isErr(maybeUserData)) {
+    if (isErr(maybeApiKey)) {
       // otherwise display errors
-      switch (maybeUserData.Err) {
+      switch (maybeApiKey.Err) {
         case "USER_USERNAME_INVALID": {
           fprops.setErrors({
             username: "Invalid username"
@@ -109,7 +111,7 @@ function RegisterForm(props: RegisterFormProps) {
       return;
     }
     // execute callback
-    props.onSuccess();
+    props.onSuccess(maybeApiKey.Ok);
   }
 
   const normalizeInput = (e: string) => e.replace(/[^a-z0-9]+/g, "");
@@ -148,6 +150,7 @@ function RegisterForm(props: RegisterFormProps) {
           <Form.Group >
             <Form.Label >Username</Form.Label>
             <Form.Control
+              name="username"
               placeholder="username"
               value={fprops.values.username}
               onChange={e => fprops.setFieldValue("username", normalizeInput(e.target.value))}

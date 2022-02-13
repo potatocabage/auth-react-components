@@ -2,21 +2,43 @@ import React from 'react';
 import { Card } from 'react-bootstrap'
 
 import RegisterForm from '../components/RegisterForm';
-import { SimpleLayout, BrandedComponentProps } from '@innexgo/common-react-components';
+import { SimpleLayout, Branding } from '@innexgo/common-react-components';
+import AuthenticatedComponentProps from '../components/AuthenticatedComponentProps';
+import { ApiKey, ApiKeyNewCancelProps } from '@innexgo/frontend-auth-api';
 
-function Register(props: BrandedComponentProps) {
-  const [successful, setSuccess] = React.useState(false);
+import { useNavigate } from 'react-router-dom';
+
+// this function returns true if your account is incomplete
+// if you're fully logged in, you can still view the register
+// after you fill out the register though, you'll be automatically logged out
+const createdInitialAccount = (apiKey: ApiKey | null) =>
+  apiKey !== null &&
+  apiKey.creationTime + apiKey.duration > Date.now()
+  && (apiKey.apiKeyKind === "NO_EMAIL" || apiKey.apiKeyKind === "NO_PARENT");
+
+
+type RegisterProps = {
+  branding: Branding,
+  apiKey: ApiKey | null,
+  setApiKey: (a: ApiKey | null) => void
+}
+
+function Register(props: RegisterProps) {
+  const navigate = useNavigate();
   return (
     <SimpleLayout branding={props.branding}>
       <div className="h-100 w-100 d-flex">
         <Card className="mx-auto my-auto">
           <Card.Body>
             <Card.Title>Register</Card.Title>
-            {successful
-              ? <Card.Text>
-                Your account has been created, <a href={props.branding.dashboardUrl}>click here to log in</a>.
-              </Card.Text>
-              : <RegisterForm onSuccess={() => setSuccess(true)} tosUrl={props.branding.tosUrl} />
+            {createdInitialAccount(props.apiKey)
+              // if authenticated go to home
+              ? navigate(props.branding.dashboardUrl)
+              // if not authenticated yet, then display this
+              : <RegisterForm
+                onSuccess={apiKey => props.setApiKey(apiKey)}
+                tosUrl={props.branding.tosUrl}
+              />
             }
           </Card.Body>
         </Card>
